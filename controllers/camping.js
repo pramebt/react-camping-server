@@ -4,7 +4,7 @@ exports.listCamping = (req,res) =>{
         console.log(asdsa)
     res.send('Hello controllers')
     } catch(error){
-        console.log(error.message)
+        // console.log(error.message)
         res.status(500).json({message:'Server Error'})
     }
     

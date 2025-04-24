@@ -3,9 +3,11 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const campingRoute = require('./routes/camping')
+const morgan = require("morgan")
 //middleware
 app.use(cors())
 app.use(express.json())
+app.use(morgan('dev'))
 //method GET,PUT,POST,PATCH,DELETE
 // app.get('/',(req,res)=>{
 //     console.log('hello backend world');
