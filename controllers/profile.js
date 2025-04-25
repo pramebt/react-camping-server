@@ -2,9 +2,11 @@ const renderError = require("../utils/renderError")
 
 exports.createProfile = (req,res,next)=>{
     try{
+        const {firstname,lastname,clerkid} = req.body;
         if(true){
-            return renderError(401,'Token invalid')
+            return renderError(400,"jufsfsfsfsf")
         }
+        console.log(firstname, lastname,clerkid)
         console.log('Hello Create Profile')
         res.json({message:'Hello create profile'})
     } catch (error){
