@@ -1,12 +1,9 @@
-const renderError = require("../utils/renderError")
 
 exports.createProfile = (req,res,next)=>{
     try{
-        const {firstname,lastname,clerkid} = req.body;
-        if(true){
-            return renderError(400,"jufsfsfsfsf")
-        }
-        console.log(firstname, lastname,clerkid)
+        const {firstname,lastname} = req.body;
+        console.log(req.headers.authorization)
+        console.log(firstname, lastname)
         console.log('Hello Create Profile')
         res.json({message:'Hello create profile'})
     } catch (error){
