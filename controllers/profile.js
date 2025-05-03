@@ -1,15 +1,39 @@
-
-exports.createProfile = (req,res,next)=>{
+const prisma = require('../config/prisma')
+exports.createProfile = async(req,res,next)=>{
     try{
         const {firstname,lastname} = req.body;
-        console.log(req.headers.authorization)
-        console.log(firstname, lastname)
+        const { id } = req.user;
+        const email = req.user.emailAddresses[0].emailAddress
+        
+        // const profile = await prisma.profile.create({
+        //     data:{
+        //         firstname: firstname,
+        //         lastname: lastname,
+        //         clerkId: id,
+        //         email
+        //     }
+        // })
+        const profile = await prisma.profile.upsert({
+            where:{ clerkId : id },
+            create:{
+                firstname,
+                lastname,
+                email,
+                clerkId : id
+            },
+            update:{
+                firstname,
+                lastname,
+                email
+            }
+        })
+        
+        console.log(firstname, lastname ,id,email)
         console.log('Hello Create Profile')
-        res.json({message:'Hello create profile'})
+        res.json({result:profile, message:'create profile'})
     } catch (error){
         console.log(error.message)
-        // throw new Error()
-        // res.status(500).json({message:"Server Error"})\
+
         next(error)
     }
 }

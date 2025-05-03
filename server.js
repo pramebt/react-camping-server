@@ -7,6 +7,8 @@ const morgan = require("morgan")
 const {readdirSync} = require('fs')
 const handleError = require('./middlewares/error')
 
+require('dotenv/config')
+const {clerkMiddleware} = require("@clerk/express")
 //-------------------------------------------------------------------*
 // const campingRoute = require('./routes/camping')
 // const profileRoute = require('./routes/profile')
@@ -15,6 +17,7 @@ const handleError = require('./middlewares/error')
 app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
+app.use(clerkMiddleware())
 //method GET,PUT,POST,PATCH,DELETE
 
 
