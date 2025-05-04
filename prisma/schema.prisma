@@ -15,11 +15,26 @@ datasource db {
 
 //สร้าง model
 model Profile {
-  id        Int      @id @default(autoincrement())
-  clerkId   String   @unique
+  id        Int        @id @default(autoincrement())
+  clerkId   String     @unique
   firstname String
   lastname  String
   email     String
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updateAt  DateTime   @updatedAt
+  landmarks Landmark[]
+}
+
+model Landmark {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  lat         Float
+  lng         Float
+  price       Int
+  category    String
+  createdAt   DateTime @default(now())
+  updateAt    DateTime @updatedAt
+  profile     Profile? @relation(fields: [profileId], references: [clerkId])
+  profileId   String?
 }

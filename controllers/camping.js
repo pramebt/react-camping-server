@@ -20,7 +20,8 @@ exports.readCamping = (req,res)=>{
 
 exports.createCamping = (req,res)=>{
     try{
-        res.send('Hello Create')
+        console.log(req.body)
+        res.send('Hello Create Camping')
     } catch(error){
         next(error)
     }
