@@ -1,3 +1,5 @@
+const prisma = require('../config/prisma')
+
 exports.listCamping = (req,res,next) =>{
     try{
         console.log('Hello controllers')
@@ -18,10 +20,26 @@ exports.readCamping = (req,res)=>{
     }
 };
 
-exports.createCamping = (req,res)=>{
+exports.createCamping = async(req,res)=>{
     try{
         console.log(req.body)
-        res.send('Hello Create Camping')
+        const {title, description, price, category, lat, lng} = req.body
+        const {id} = req.user
+        const camping = await prisma.landmark.create({
+            data:{
+                title:title,
+                description:description,
+                price:price,
+                category:category,
+                lat:lat,
+                lng:lng,
+                profileId:id,
+                
+            }
+        })
+        res.json({message: "Create Camping Successfully!!!",
+            result:camping
+        })
     } catch(error){
         next(error)
     }

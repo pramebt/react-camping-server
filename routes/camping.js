@@ -20,7 +20,7 @@ router.get('/camping/:id',readCamping)
 //@ENDPOINT http://localhost:5000/api/camping
 //@METHODE POST [create]
 //@ACCESS PRIVEATE
-router.post('/camping', createCamping)
+router.post('/camping',authCheck,createCamping)
 //@ENDPOINT http://localhost:5000/api/camping
 //@METHODE Put [edit]
 //@ACCESS PRIVEATE
