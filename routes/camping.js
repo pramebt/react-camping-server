@@ -12,7 +12,7 @@ const { authCheck} = require('../middlewares/auth')
 //@ENDPOINT http://localhost:5000/api/camping/2
 //@METHODE GET [list]
 //@ACCESS PUBLIC
-router.get('/camping',authCheck,listCamping);
+router.get('/camping',listCamping);
 //@ENDPOINT http://localhost:5000/api/camping
 //@METHODE GET [read]
 //@ACCESS PUBLIC

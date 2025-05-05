@@ -1,22 +1,28 @@
 const prisma = require('../config/prisma')
 
-exports.listCamping = (req,res,next) =>{
-    try{
-        console.log('Hello controllers')
-        
-    res.send('Hello controllers')
+exports.listCamping = async (req,res) =>{
+    try{       
+        const campings = await prisma.landmark.findMany();
+        res.json({result:campings});
     } catch(error){
-        // console.log(error.message)
-        next(error)
+        console.log(error.message)
+        res.status(500).json({message:"Server Error"})
     }
     
 };
 
-exports.readCamping = (req,res)=>{
+exports.readCamping = async(req,res)=>{
     try{
-        res.send('Hello READ')
+        const {id} = req.params
+        const camping = await prisma.landmark.findFirst({
+            where:{
+                id:Number(id) 
+            }
+        })
+        res.json({result: camping})
     } catch(error){
-        next(error)
+        console.log(error.message)
+        res.status(500).json({message:"Server Error"})
     }
 };
 
@@ -41,7 +47,8 @@ exports.createCamping = async(req,res)=>{
             result:camping
         })
     } catch(error){
-        next(error)
+        console.log(error.message)
+        res.status(500).json({message:"Server Error"})
     }
 };
 
@@ -49,7 +56,8 @@ exports.updateCamping = (req,res)=>{
     try{
         res.send('Hello Update')
     } catch(error){
-        next(error)
+        console.log(error.message)
+        res.status(500).json({message:"Server Error"})
     }
 };
 
@@ -57,6 +65,7 @@ exports.deleteCamping = (req,res)=>{
     try{
         res.send('Hello Delete')
     } catch(error){
-        next(error)
+        console.log(error.message)
+        res.status(500).json({message:"Server Error"})
     }
 };
