@@ -9,13 +9,11 @@ const handleError = require('./middlewares/error')
 
 require('dotenv/config')
 const {clerkMiddleware} = require("@clerk/express")
-//-------------------------------------------------------------------*
-// const campingRoute = require('./routes/camping')
-// const profileRoute = require('./routes/profile')
+
 //-------------------------------------------------------------------*
 //middleware
 app.use(cors())
-app.use(express.json())
+app.use(express.json({limit:'10mb'}))
 app.use(morgan('dev'))
 app.use(clerkMiddleware())
 //method GET,PUT,POST,PATCH,DELETE
