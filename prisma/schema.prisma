@@ -32,6 +32,8 @@ model Landmark {
   lat         Float
   lng         Float
   price       Int
+  secure_url  String
+  public_id   String
   category    String
   createdAt   DateTime @default(now())
   updateAt    DateTime @updatedAt
