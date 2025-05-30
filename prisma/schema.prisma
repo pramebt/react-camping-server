@@ -23,20 +23,37 @@ model Profile {
   createdAt DateTime   @default(now())
   updateAt  DateTime   @updatedAt
   landmarks Landmark[]
+  bookings  Booking[]
 }
 
 model Landmark {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   title       String
-  description String
+  description String    @db.VarChar(1000)
   lat         Float
   lng         Float
   price       Int
   secure_url  String
   public_id   String
   category    String
-  createdAt   DateTime @default(now())
-  updateAt    DateTime @updatedAt
-  profile     Profile? @relation(fields: [profileId], references: [clerkId])
+  createdAt   DateTime  @default(now())
+  updateAt    DateTime  @updatedAt
+  profile     Profile?  @relation(fields: [profileId], references: [clerkId])
   profileId   String?
+  bookings    Booking[]
+}
+
+model Booking {
+  id            Int       @id @default(autoincrement())
+  totalNights   Int
+  checkIn       DateTime
+  checkOut      DateTime
+  total         Int
+  paymentStatus Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  Profile       Profile  @relation(fields: [profileId], references: [clerkId])
+  profileId     String
+  landmark      Landmark @relation(fields: [landmarkId], references: [id])
+  landmarkId    Int
 }
