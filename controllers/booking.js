@@ -1,6 +1,8 @@
 const prisma = require("../config/prisma");
 const { calTotal } = require("../utils/booking");
 const renderError = require("../utils/renderError");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 exports.createBooking = async(req,res) => {
     try{
         
@@ -54,3 +56,56 @@ exports.createBooking = async(req,res) => {
     }
 }
 
+exports.checkout = async(req,res) => {
+    try{
+        const { id } = req.body;
+        
+        const booking = await prisma.booking.findFirst({
+            where:{
+                id:Number(id)
+            },
+            include:{
+                landmark:{
+                    select:{
+                        id: true,
+                        secure_url: true,
+                        title: true,
+                    }
+                }
+            }
+        })
+        if(!booking){
+            return renderError(400,'Booking Not Found')
+        }
+        const {total,totalNights,checkIn,checkOut,landmark} = booking;
+        const {secure_url, title} = landmark;
+
+        //stripe
+        const session = await stripe.checkout.sessions.create({
+            ui_mode: "embedded",
+            line_items: [
+                {
+                    quantity: 1,
+                    price_data:{
+                        currency: "thb",
+                        product_data: {
+                            name: title,
+                            images: [secure_url],
+                            description: `Total Nights: ${totalNights}`,
+                        },
+                        unit_amount: total * 100, // Convert to cents
+                    }
+                },
+            ],
+            mode: "payment",
+            return_url: `http://localhost:5173/user/complete/{CHECKOUT_SESSION_ID}`,
+        });
+        
+    // console.log(total,totalNights,checkIn,checkOut,landmark,secure_url, title);
+    res.send({ clientSecret: session.client_secret });
+        //res.json({message: "Create Stripe Session Successfully!!!", result:session});
+    }catch(error) {
+        console.log(error.message);
+        res.status(500).json({message: "Server Error"});
+    }
+}
